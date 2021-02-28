@@ -1,0 +1,77 @@
+
+<html>
+<head>
+<title>Random imgur v2</title>
+<style type="text/css">
+img { max-width: 100%; height: auto; }
+body{
+	padding-top: 22px;
+}
+#more{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	background-color: #fff;
+}
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+function randomString(string_length)
+{
+	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	var output = "";
+	var index;
+
+	for (var i = 0; i < string_length; i++)
+	{
+		var index = Math.floor(Math.random() * chars.length);
+		output += chars.substring(index, index + 1);
+	}
+
+	return output;
+}
+
+var counter = 0;
+var timer;
+var $content; //https://www.speedtest.net/result/4464074580.png //https://www.speedtest.net/result/4465279391.png // http://i.imgur.com/SHcVo35.png //
+
+function render()
+	{
+	counter++;
+	var rand = randomString(5);
+	$image = $content.append('<a href="http://i.imgur.com/'+rand+'.jpg"><img style="max-height:160px;" src="http://i.imgur.com/'+rand+'.png"/></a>');
+	//$image.error(function(){
+	//	$(this).css({'display':'none'});
+	//	});
+	$('img',$image).load(function(){
+		if ($(this).width() == 161 && $(this).height() == 81)
+			$(this).css({'display':'none'});
+		});
+	if (counter > 100)
+		{
+		clearInterval(timer);
+		counter = 0;
+		}
+	}
+
+function init()
+	{
+	$content = $('#content');
+	timer = setInterval(render,20);
+	
+	$('#more').click(function(){
+		if (counter == 0)
+			timer = setInterval(render,20);	
+		return false;
+		});
+	}
+
+$(init);
+</script>
+<body>
+<h1>Random imgur v2</h1>
+<div id="content"></div>
+<div><a id="more" href="#">More</a></div>
+</body>
+</html>
